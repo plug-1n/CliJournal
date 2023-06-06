@@ -1,14 +1,17 @@
 package handlers
 
 import (
+	"bufio"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 
 	"github.com/plug-1n/cli-journal/internal/models"
 )
 
-func GetAllData() {
+func GetAllRecords() ([]byte, error) {
 	content, err := ioutil.ReadFile("temp_db.json")
 	if err != nil {
 		log.Fatal("Error during opening file: ", err)
@@ -18,6 +21,28 @@ func GetAllData() {
 	if err != nil {
 		log.Fatal("Error during Unmarshall: ", err)
 	}
-	log.Println(payLoad)
+	return content, nil
+
+}
+func AddNewRecord() {
+	fmt.Println("Input title: ")
+	reader := bufio.NewReader(os.Stdin)
+	title, err := reader.ReadString('\n')
+	if err != nil {
+		log.Fatal(err)
+	}
+	if title == "" {
+		log.Fatal("Title can't be empty")
+	}
+	fmt.Println("Input content: ")
+	body, err := reader.ReadString('\n')
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println(title, body)
+	// content, err := GetAllRecords()
+	// if err != nil {
+	// 	log.Fatal("Error during Get All records: ", err)
+	// }
 
 }

@@ -8,5 +8,5 @@ import (
 
 func main() {
 	fmt.Println("Start process")
-	handlers.GetAllData()
+	handlers.AddNewRecord()
 }
