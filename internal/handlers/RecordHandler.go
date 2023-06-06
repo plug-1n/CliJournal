@@ -7,7 +7,9 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"time"
 
+	"github.com/google/uuid"
 	"github.com/plug-1n/cli-journal/internal/models"
 )
 
@@ -25,7 +27,7 @@ func GetAllRecords() ([]byte, error) {
 
 }
 func AddNewRecord() {
-	fmt.Println("Input title: ")
+	fmt.Print("Input title: ")
 	reader := bufio.NewReader(os.Stdin)
 	title, err := reader.ReadString('\n')
 	if err != nil {
@@ -39,10 +41,14 @@ func AddNewRecord() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println(title, body)
-	// content, err := GetAllRecords()
-	// if err != nil {
-	// 	log.Fatal("Error during Get All records: ", err)
-	// }
+	currentTime := time.Now().Format("2006-01-02")
+
+	content, err := GetAllRecords()
+	if err != nil {
+		log.Fatal("Error during Get All records: ", err)
+	}
+	id := uuid.New()
+	newRecord = models.Record(id, title, body, currentTime)
+	content = append(content, []string{title, body, currentTime})
 
 }
